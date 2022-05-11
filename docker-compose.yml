@@ -1,0 +1,20 @@
+version: '3'
+services:
+  hqc265-db1:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: hqc265
+    container_name: hqc265-db1
+    hostname: hqc265-db1
+
+  hqc265-web1:
+    build: .
+    ports:
+      - '12075:12075'
+    container_name: hqc265-web1
+    hostname: web1
+    depends_on:
+      - hqc265-db1

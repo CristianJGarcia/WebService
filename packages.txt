@@ -1,0 +1,7 @@
+flask
+flask_api
+flask_cors
+flask_swagger_ui
+pymysql
+requests
+cryptography

@@ -1,0 +1,187 @@
+openapi: 3.0.0
+info:
+  description:
+    'This is our Devops RESTFUL-ish server. For this sample, you can use the api
+    key `cs4783FTW` to test the authorization filters. Members: Ashley Garcia
+    and Cristian Garcia'
+  version: 1.0.0
+  title: Devops CS-4783-001-Spring-2020
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+tags:
+  - name: Say Hello
+    description: Send a hello message to the server
+  - name: General Properties
+    description: Access to current properties
+  - name: Specific Properties
+    description: Access to specific property by property id
+paths:
+  /hello:
+    get:
+      tags:
+        - Say Hello
+      summary: Say hello to the server
+      description: Returns a message back saying hello
+      responses:
+        '200':
+          description: successful operation
+  /properties:
+    get:
+      tags:
+        - General Properties
+      summary: View all current properties
+      description: All current properties will be listed
+      operationId: getProperties
+      responses:
+        '200':
+          description: successful operation
+    post:
+      tags:
+        - General Properties
+      summary: Add a property
+      description: Information inputted for a property will be insterted into the list
+      operationId: addProperty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Properties'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Properties'
+        description: Property that needs to be added
+        required: true
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+      security:
+        - Authorization: []
+  '/properties/{ID}':
+    get:
+      tags:
+        - Specific Properties
+      summary: View a specific property
+      description: Specific property will be listed
+      operationId: getSpecific
+      parameters:
+        - name: ID
+          in: path
+          description: ID of property to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+        '404':
+          description: not found
+    put:
+      tags:
+        - Specific Properties
+      summary: Update a property
+      description: Property will be updated based on id
+      operationId: updateProperty
+      parameters:
+        - name: ID
+          in: path
+          description: ID of property to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Properties'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Properties'
+        description:
+          Update property with different values. Below is an example of what
+          type of values.
+        required: true
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+      security:
+        - Authorization: []
+    delete:
+      tags:
+        - Specific Properties
+      summary: Delete a property
+      description: Property will be deleted based on id
+      operationId: deleteProperty
+      parameters:
+        - name: ID
+          in: path
+          description: ID of property to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+      security:
+        - Authorization: []
+servers:
+  - url: http://52.170.167.62:12075/
+  - url: http://52.170.167.62:12070/
+components:
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    Properties:
+      type: object
+      required:
+        - address
+        - city
+        - state
+        - zip
+      properties:
+        address:
+          type: string
+          example: 123 Example St.
+        city:
+          type: string
+          example: Fort Sill
+        id:
+          type: integer
+          format: int64
+        state:
+          type: string
+          example: OK
+        zip:
+          type: string
+          example: '83230'
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
