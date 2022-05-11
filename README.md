@@ -1,4 +1,4 @@
-# WebService1
+# WebService
 Assignment 3 for CS4783 DevOps
 
 Group Members: Ashley Garcia and Cristian Garcia
